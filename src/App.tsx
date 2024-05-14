@@ -4,14 +4,12 @@ import "./App.css";
 import { AuthContext } from "./context/authContext/AuthContext";
 import "./index.css";
 import SignUpScreen from "./pages/authentication/signUp/SignUpScreen";
-import CheckAuthenticationScreen from "./pages/authentication/checkAuthentication/CheckAuthenticationScreen";
-import DashboardScreen from "./pages/home/dashboard/DashboardScreen";
 import SignInScreen from "./pages/authentication/signIn/SignInScreen";
 import AppBarResponsive from "./components/AppBarResponsive";
 import EventScreen from "./pages/home/events/EventScreen";
 import useCheckAuthenticationViewController from "./pages/authentication/checkAuthentication/useCheckAuthenticationViewController";
-import PersonsScreen from "./pages/home/persons/PersonsScreen";
 import SponsorScreen from "./pages/home/sponsors/SponsorScreen";
+import LocationScreen from "./pages/home/locations/LocationScreen";
 
 function App() {
   const {
@@ -31,10 +29,9 @@ function App() {
           </>
         ) : (
           <>
-            <Route path="/" element={<DashboardScreen />} />
-            <Route path="/events" element={<EventScreen />} />
-            <Route path="/persons" element={<PersonsScreen />} />
+            <Route path="/" element={<EventScreen />} />
             <Route path="/sponsors" element={<SponsorScreen />} />
+            <Route path="/locations" element={<LocationScreen />} />
           </>
         )}
       </Routes>

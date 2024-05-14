@@ -13,45 +13,45 @@ import Paper from "@mui/material/Paper";
 import Actions from "../../../components/Actions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomModal from "../../../components/CustomModal";
-import useSponsorViewController from "./useSponsorViewController";
-import useSponsorViewModel from "./useSponsorViewModel";
-import SponsorForm from "./components/SponsorForm";
+import useLocationViewController from "./useLocationViewController";
+import useLocationViewModel from "./useLocationViewModel";
+import LocationForm from "./components/LocationForm";
 
-const SponsorScreen = () => {
+const LocationScreen = () => {
   const {
     loading,
-    getSponsors,
-    loadingSponsors,
-    sponsors,
+    getLocations,
+    loadingLocations,
+    locations,
     loadingOrganizers,
     organizers,
     getOrganizers,
-    postSponsor,
-  } = useSponsorViewModel();
+    postLocation,
+  } = useLocationViewModel();
 
   const {
     handleClose,
     open,
     type,
-    onEditSponsor,
-    onCreateSponsor,
-    onDeleteSponsor,
-    sponsorForm,
+    onEditLocation,
+    onCreateLocation,
+    onDeleteLocation,
+    locationForm,
     onChangeField,
-  } = useSponsorViewController();
+  } = useLocationViewController();
 
   return (
     <>
       <div className="p-10">
         <div className="my-10 flex flex-row justify-between">
-          <h1 className="text-xl font-bold">Patrocinadores</h1>
+          <h1 className="text-xl font-bold">Ubicaciones</h1>
           <Button
             variant="contained"
             size="large"
             style={{ textTransform: "none" }}
-            onClick={onCreateSponsor}
+            onClick={onCreateLocation}
           >
-            <p className="mr-2">Agregar patrocinador</p>
+            <p className="mr-2">Agregar ubicación</p>
             <AddCircleIcon />
           </Button>
         </div>
@@ -73,7 +73,15 @@ const SponsorScreen = () => {
                   </TableCell>
 
                   <TableCell>
-                    <p className="font-bold">Patrocinador</p>
+                    <p className="font-bold">Nombre</p>
+                  </TableCell>
+
+                  <TableCell>
+                    <p className="font-bold">Direccion</p>
+                  </TableCell>
+
+                  <TableCell>
+                    <p className="font-bold">Capacidad</p>
                   </TableCell>
 
                   <TableCell align="center">
@@ -82,23 +90,23 @@ const SponsorScreen = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sponsors.map((sponsor) => (
+                {locations.map((location) => (
                   <TableRow
-                    key={sponsor.patrocinador_id}
+                    key={location.localizacion_id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {sponsor.patrocinador_id}
+                      {location.localizacion_id}
                     </TableCell>
-                    <TableCell>{sponsor.patrocinador_nombre}</TableCell>
+                    <TableCell>{location.localizacion_nombre}</TableCell>
 
                     <TableCell align="center">
                       <Actions
                         onEdit={() =>
-                          onEditSponsor(sponsor, sponsor.patrocinador_id)
+                          onEditLocation(location, location.localizacion_id)
                         }
                         onDelete={() =>
-                          onDeleteSponsor(sponsor.patrocinador_id)
+                          onDeleteLocation(location.localizacion_id)
                         }
                       />
                     </TableCell>
@@ -120,7 +128,7 @@ const SponsorScreen = () => {
             : "Eliminar patrocinador"
         }
         onAccept={async () => {
-          if (type === "create") await postSponsor(sponsorForm);
+          if (type === "create") await postLocation(locationForm);
           else if (type === "edit") console.log("edit");
           else if (type === "delete") console.log("delete");
           handleClose();
@@ -129,15 +137,15 @@ const SponsorScreen = () => {
         {type === "delete" ? (
           <Typography>¿Está seguro que desea eliminar el registro?</Typography>
         ) : (
-          <SponsorForm
-            getSponsors={getSponsors}
+          <LocationForm
+            getLocations={getLocations}
             loadingOrganizers={loadingOrganizers}
-            loadingSponsors={loadingSponsors}
-            sponsors={sponsors}
+            loadingLocations={loadingLocations}
+            locations={locations}
             getOrganizers={getOrganizers}
             organizers={organizers}
             onChangeField={onChangeField}
-            sponsorForm={sponsorForm}
+            locationForm={locationForm}
           />
         )}
       </CustomModal>
@@ -145,4 +153,4 @@ const SponsorScreen = () => {
   );
 };
 
-export default SponsorScreen;
+export default LocationScreen;

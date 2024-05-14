@@ -17,11 +17,11 @@ import { AuthContext } from "../context/authContext/AuthContext";
 import { Skeleton } from "@mui/material";
 
 const pages = [
-  { name: "Eventos", link: "/events" },
-  { name: "Conferencias", link: "/conferences" },
-  { name: "Personas", link: "/persons" },
+  { name: "Eventos", link: "/" },
+  //  { name: "Conferencias", link: "/conferences" },
+  //  { name: "Personas", link: "/persons" },
   { name: "Patrocinadores", link: "/sponsors" },
-  { name: "Localizaciones", link: "locations" },
+  { name: "Ubicaciones", link: "/locations" },
 ];
 const AppBarResponsive = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -134,7 +134,7 @@ const AppBarResponsive = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            INFINITY EVENTOS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
