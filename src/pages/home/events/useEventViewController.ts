@@ -12,6 +12,7 @@ const useEventViewController = () => {
     organizatorId: undefined,
     sponsorId: undefined,
   });
+  const [eventIdSelected, setEventIdSelected] = useState<number>();
 
   const onChangeField = (type: keyof EventRequest, value: any) => {
     const newEventForm = eventForm;
@@ -22,7 +23,7 @@ const useEventViewController = () => {
     if (type === "sponsorId") newEventForm.sponsorId = value;
     if (type === "description") newEventForm.description = value;
 
-    setEventForm(newEventForm);
+    setEventForm({ ...newEventForm });
   };
 
   const onEditEvent = (event: EventResponse, eventId: number) => {
@@ -35,6 +36,7 @@ const useEventViewController = () => {
       sponsorId: event.evento_patrocinador_id,
     };
 
+    setEventIdSelected(eventId);
     setEventForm(form);
 
     handleOpen();
@@ -56,7 +58,7 @@ const useEventViewController = () => {
 
   const onDeleteEvent = (eventId: number) => {
     setType("delete");
-
+    setEventIdSelected(eventId);
     handleOpen();
   };
 
@@ -73,6 +75,7 @@ const useEventViewController = () => {
     onCreateEvent,
     onDeleteEvent,
     onChangeField,
+    eventIdSelected,
   };
 };
 

@@ -28,6 +28,8 @@ const EventScreen = () => {
     organizers,
     getOrganizers,
     postEvent,
+    putEvent,
+    deleteEvent,
   } = useEventViewModel();
 
   const {
@@ -39,6 +41,7 @@ const EventScreen = () => {
     onDeleteEvent,
     eventForm,
     onChangeField,
+    eventIdSelected,
   } = useEventViewController();
 
   return (
@@ -128,8 +131,10 @@ const EventScreen = () => {
         }
         onAccept={async () => {
           if (type === "create") await postEvent(eventForm);
-          else if (type === "edit") console.log("edit");
-          else if (type === "delete") console.log("delte");
+          else if (type === "edit")
+            eventIdSelected && putEvent(eventForm, eventIdSelected);
+          else if (type === "delete")
+            eventIdSelected && deleteEvent(eventIdSelected);
           handleClose();
         }}
       >

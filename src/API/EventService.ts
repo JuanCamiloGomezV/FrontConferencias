@@ -14,3 +14,21 @@ export const postEventService = async (eventForm: EventRequest) => {
   );
   return data;
 };
+
+export const putEventService = async (
+  eventForm: EventRequest,
+  eventId: number
+) => {
+  const { data } = await privateService.put<EventResponse>(
+    `api/events/${eventId}`,
+    eventForm
+  );
+  return data;
+};
+
+export const deleteEventService = async (eventId: number) => {
+  const { data } = await privateService.delete<EventResponse>(
+    `api/events/${eventId}`
+  );
+  return data;
+};

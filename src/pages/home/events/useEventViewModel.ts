@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { getUsersInformationService } from "../../../API/AuthenticationService";
-import { getEventsService, postEventService } from "../../../API/EventService";
+import {
+  deleteEventService,
+  getEventsService,
+  postEventService,
+  putEventService,
+} from "../../../API/EventService";
 import { getSponsorsService } from "../../../API/SponsorService";
 import { EventRequest } from "../../../model/request/EventRequest";
 import { EventResponse } from "../../../model/response/EventResponse";
@@ -22,7 +27,6 @@ const useEventViewModel = () => {
   const getEvents = async () => {
     try {
       const eventsResponse = await getEventsService();
-      console.log(eventsResponse);
       setEvents(eventsResponse);
     } catch (error) {
       console.error(error);
@@ -34,6 +38,37 @@ const useEventViewModel = () => {
     try {
       const newEvent = await postEventService(eventForm);
       setEvents((prev) => [...prev, newEvent]);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const putEvent = async (eventForm: EventRequest, idEvent: number) => {
+    try {
+      const newEvent = await putEventService(eventForm, idEvent);
+
+      const eventsUpdate = events;
+      const indexEventEdit = eventsUpdate.findIndex(
+        (event) => event.evento_id === idEvent
+      );
+      eventsUpdate[indexEventEdit] = newEvent;
+
+      setEvents([...eventsUpdate]);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const deleteEvent = async (idEvent: number) => {
+    try {
+      await deleteEventService(idEvent);
+
+      const eventsUpdate = events.filter(
+        (event) => event.evento_id !== idEvent
+      );
+      setEvents([...eventsUpdate]);
     } catch (error) {
       console.error(error);
     }
@@ -70,6 +105,8 @@ const useEventViewModel = () => {
     loadingOrganizers,
     getOrganizers,
     postEvent,
+    putEvent,
+    deleteEvent,
   };
 };
 
