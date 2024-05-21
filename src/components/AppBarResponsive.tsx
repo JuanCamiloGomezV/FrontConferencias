@@ -21,7 +21,7 @@ const pages = [
   { name: "Conferencias", link: "/conferences" },
   { name: "Personas", link: "/persons" },
   { name: "Patrocinadores", link: "/sponsors" },
-  { name: "Localizaciones", link: "locations" },
+  // { name: "Localizaciones", link: "locations" },
 ];
 const AppBarResponsive = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);

@@ -136,18 +136,6 @@ const PersonForm = ({
           ))}
         </TextField>
       </div>
-      <Button
-        component="label"
-        role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        startIcon={<CloudUploadIcon />}
-        fullWidth
-        size="medium"
-      >
-        Upload file
-        <VisuallyHiddenInput type="file" />
-      </Button>
     </div>
   );
 };

@@ -35,7 +35,7 @@ function App() {
             <Route path="/" element={<DashboardScreen />} />
             <Route path="/events" element={<EventScreen />} />
             <Route path="/persons" element={<PersonsScreen />} />
-            <Route path="/locations" element={<LocationScreen />} />
+            {/* <Route path="/locations" element={<LocationScreen />} /> */}
             <Route path="/sponsors" element={<SponsorScreen />} />
           </>
         )}
