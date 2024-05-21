@@ -62,6 +62,7 @@ const EventForm = ({
           fullWidth
           disabled={loadingOrganizers}
           size="medium"
+          required
           defaultValue={eventForm.organizatorId ?? ""}
           onChange={(event) =>
             onChangeField("organizatorId", event.target.value)
@@ -82,6 +83,7 @@ const EventForm = ({
           label={loadingSponsors ? "Cargando" : "Patrocinador"}
           fullWidth
           size="medium"
+          required
           disabled={loadingSponsors}
           defaultValue={eventForm.sponsorId ?? ""}
           onChange={(event) => onChangeField("sponsorId", event.target.value)}

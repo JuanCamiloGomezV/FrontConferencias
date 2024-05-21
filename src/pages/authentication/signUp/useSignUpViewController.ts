@@ -7,10 +7,10 @@ export const useSignUpViewController = () => {
   const [form, setForm] = useState<SignUpRequest>({
     email: "",
     identification: "",
-    institutionId: "",
+    institutionId: undefined,
     name: "",
     password: "",
-    roleId: "",
+    roleId: undefined,
   });
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [disabledButton, setDisabledButton] = useState(true);
@@ -20,7 +20,7 @@ export const useSignUpViewController = () => {
 
   useEffect(() => {
     const newForm = form;
-    newForm.roleId = "3";
+    newForm.roleId = 3;
     setForm(newForm);
   }, []);
 
@@ -28,15 +28,19 @@ export const useSignUpViewController = () => {
     validateForm();
   }, [form, passwordConfirm]);
 
-  const updateField = (
-    type: keyof typeof form,
-    event:
-      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string>
-  ) => {
+  const updateField = (type: keyof typeof form, value: any) => {
     const newForm = form;
 
-    newForm[type] = event.target.value ?? "";
+    if (type === "email" && typeof value == "string") newForm.email = value;
+    if (type === "identification" && typeof value == "string")
+      newForm.identification = value;
+    if (type === "name" && typeof value == "string") newForm.name = value;
+    if (type === "password" && typeof value == "string")
+      newForm.password = value;
+    if (type === "institutionId" && typeof value == "number")
+      newForm.institutionId = value;
+    if (type === "roleId" && typeof value == "number") newForm.roleId = value;
+
     setForm({ ...newForm });
   };
 

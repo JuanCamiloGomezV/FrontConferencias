@@ -10,53 +10,49 @@ import {
   Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import useEventViewModel from "./useEventViewModel";
 import Actions from "../../../components/Actions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomModal from "../../../components/CustomModal";
-import EventForm from "./components/EventForm";
-import useEventViewController from "./useEventViewController";
+import LocationForm from "./components/LocationForm";
+import useLocationViewModel from "./useLocationViewModel";
+import useLocationViewController from "./useLocationViewController";
 
-const EventScreen = () => {
+const LocationScreen = () => {
   const {
-    events,
     loading,
-    getSponsors,
-    loadingSponsors,
-    sponsors,
-    loadingOrganizers,
-    organizers,
-    getOrganizers,
-    postEvent,
-    putEvent,
-    deleteEvent,
+    getLocations,
+    locations,
+    postLocation,
+    deleteLocation,
+    putLocation,
     loadingChange,
-  } = useEventViewModel();
+  } = useLocationViewModel();
 
   const {
     handleClose,
     open,
     type,
-    onEditEvent,
-    onCreateEvent,
-    onDeleteEvent,
-    eventForm,
+    onEditLocation,
+    onCreateLocation,
+    onDeleteLocation,
+    locationForm,
     onChangeField,
-    eventIdSelected,
-  } = useEventViewController();
+    locationIdSelected,
+  } = useLocationViewController();
 
+  console.log(locations);
   return (
     <>
-      <div className="p-10 flex flex-col bg-slate-50 h-screen">
+      <div className="p-10">
         <div className="my-10 flex flex-row justify-between">
-          <h1 className="text-xl font-bold">Eventos</h1>
+          <h1 className="text-xl font-bold">Ubicaciones</h1>
           <Button
             variant="contained"
             size="large"
             style={{ textTransform: "none" }}
-            onClick={onCreateEvent}
+            onClick={onCreateLocation}
           >
-            <p className="mr-2">Crear evento</p>
+            <p className="mr-2">Agregar ubicación</p>
             <AddCircleIcon />
           </Button>
         </div>
@@ -78,39 +74,36 @@ const EventScreen = () => {
                   </TableCell>
 
                   <TableCell>
-                    <p className="font-bold">Ciudad</p>
+                    <p className="font-bold">Direccion</p>
                   </TableCell>
+
                   <TableCell>
-                    <p className="font-bold">Organizador</p>
+                    <p className="font-bold">Capacidad</p>
                   </TableCell>
-                  <TableCell>
-                    <p className="font-bold">Patrocinador</p>
-                  </TableCell>
-                  <TableCell>
-                    <p className="font-bold">Descripción</p>
-                  </TableCell>
+
                   <TableCell align="center">
                     <p className="font-bold">Acciones</p>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {events.map((event) => (
+                {locations.map((location) => (
                   <TableRow
-                    key={event.evento_id}
+                    key={location.ubicacion_id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {event.evento_nombre}
+                      {location.ubicacion_nombre}
                     </TableCell>
-                    <TableCell>{event.evento_ciudad}</TableCell>
-                    <TableCell>{event.evento_organizador_nombre}</TableCell>
-                    <TableCell>{event.evento_patrocinador_nombre}</TableCell>
-                    <TableCell>{event.evento_descripcion}</TableCell>
+                    <TableCell>{location.ubicacion_direccion}</TableCell>
+                    <TableCell>{location.ubicacion_capacidad}</TableCell>
+
                     <TableCell align="center">
                       <Actions
-                        onEdit={() => onEditEvent(event, event.evento_id)}
-                        onDelete={() => onDeleteEvent(event.evento_id)}
+                        onEdit={() =>
+                          onEditLocation(location, location.ubicacion_id)
+                        }
+                        onDelete={() => onDeleteLocation(location.ubicacion_id)}
                       />
                     </TableCell>
                   </TableRow>
@@ -125,17 +118,18 @@ const EventScreen = () => {
         open={open}
         title={
           type === "create"
-            ? "Crear evento"
+            ? "Crear patrocinador"
             : type === "edit"
-            ? "Editar evento"
-            : "Eliminar evento"
+            ? "Editar patrocinador"
+            : "Eliminar patrocinador"
         }
         onAccept={async () => {
-          if (type === "create") await postEvent(eventForm);
+          if (type === "create") await postLocation(locationForm);
           else if (type === "edit")
-            eventIdSelected && putEvent(eventForm, eventIdSelected);
+            locationIdSelected &&
+              (await putLocation(locationForm, locationIdSelected));
           else if (type === "delete")
-            eventIdSelected && deleteEvent(eventIdSelected);
+            locationIdSelected && (await deleteLocation(locationIdSelected));
           handleClose();
         }}
         loading={loadingChange}
@@ -143,15 +137,10 @@ const EventScreen = () => {
         {type === "delete" ? (
           <Typography>¿Está seguro que desea eliminar el registro?</Typography>
         ) : (
-          <EventForm
-            getSponsors={getSponsors}
-            loadingOrganizers={loadingOrganizers}
-            loadingSponsors={loadingSponsors}
-            sponsors={sponsors}
-            getOrganizers={getOrganizers}
-            organizers={organizers}
+          <LocationForm
+            getLocations={getLocations}
             onChangeField={onChangeField}
-            eventForm={eventForm}
+            locationForm={locationForm}
           />
         )}
       </CustomModal>
@@ -159,4 +148,4 @@ const EventScreen = () => {
   );
 };
 
-export default EventScreen;
+export default LocationScreen;

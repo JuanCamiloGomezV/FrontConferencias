@@ -19,8 +19,14 @@ const SignUpScreen = () => {
     passwordConfirm,
     updatePasswordConfirm,
   } = useSignUpViewController();
-  const { signUp, loading, error, institutions, loadingInstitutions } =
-    useSignUpViewModel();
+  const {
+    signUp,
+    loading,
+    error,
+    institutions,
+    loadingInstitutions,
+    setError,
+  } = useSignUpViewModel();
   return (
     <div className="flex">
       <div className="w-1/2 h-screen flex justify-center items-center">
@@ -36,7 +42,16 @@ const SignUpScreen = () => {
           </NavLink>
         </div>
         <div className="flex justify-center flex-col mt-10">
-          {error.length > 0 && <Alert severity="error">{error}</Alert>}
+          {error.length > 0 && (
+            <Alert
+              severity="error"
+              onClose={() => {
+                setError("");
+              }}
+            >
+              {error}
+            </Alert>
+          )}
           <section className="mb-10">
             <h1 className="text-3xl font-bold text-primary">
               Bienvenido a Infinity!
@@ -53,7 +68,7 @@ const SignUpScreen = () => {
                   placeholder="Ingresa tu nombre"
                   label="Nombre"
                   value={form.name}
-                  onChange={(event) => updateField("name", event)}
+                  onChange={(event) => updateField("name", event.target.value)}
                   color="primary"
                   required
                 />
@@ -65,7 +80,9 @@ const SignUpScreen = () => {
                   placeholder="Ingresa tu cedula"
                   label="Cedula"
                   value={form.identification}
-                  onChange={(event) => updateField("identification", event)}
+                  onChange={(event) =>
+                    updateField("identification", event.target.value)
+                  }
                   required
                 />
               </div>
@@ -79,7 +96,9 @@ const SignUpScreen = () => {
                     id="demo-simple-select"
                     label={loadingInstitutions ? "Cargando..." : "Institución"}
                     required
-                    onChange={(event) => updateField("institutionId", event)}
+                    onChange={(event) =>
+                      updateField("institutionId", event.target.value)
+                    }
                     value={form.institutionId}
                     disabled={loadingInstitutions}
                   >
@@ -101,7 +120,7 @@ const SignUpScreen = () => {
                   placeholder="Ingresa tu correo"
                   label="Correo"
                   value={form.email}
-                  onChange={(event) => updateField("email", event)}
+                  onChange={(event) => updateField("email", event.target.value)}
                   required
                 />
               </div>
@@ -112,7 +131,9 @@ const SignUpScreen = () => {
                   placeholder="Ingresa tu contraseña"
                   label="Contraseña"
                   value={form.password}
-                  onChange={(event) => updateField("password", event)}
+                  onChange={(event) =>
+                    updateField("password", event.target.value)
+                  }
                   required
                 />
               </div>

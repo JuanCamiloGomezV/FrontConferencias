@@ -15,9 +15,27 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomModal from "../../../components/CustomModal";
 import usePersonsViewModel from "./usePersonsViewModel";
 import usePersonsViewController from "./usePersonsViewController";
+import PersonForm from "./components/PersonForm";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/authContext/AuthContext";
+import { ROL_ORGANIZER_ID } from "../../../utils/Constants";
 
 const PersonsScreen = () => {
-  const { loading, persons } = usePersonsViewModel();
+  const {
+    loading,
+    persons,
+    getRoles,
+    postPerson,
+    roles,
+    loadingRoles,
+    getInstitutions,
+    institutions,
+    loadingInstitutions,
+    error,
+    setError,
+    loadingChange,
+    deletePerson,
+  } = usePersonsViewModel();
   const {
     handleClose,
     onChangeField,
@@ -26,10 +44,14 @@ const PersonsScreen = () => {
     onEditPerson,
     open,
     type,
+    form,
+    personIdSelected,
   } = usePersonsViewController();
+  const { userInformation } = useContext(AuthContext);
+
   return (
     <>
-      <div className="p-10">
+      <div className="p-10 flex flex-col bg-slate-50 h-screen">
         <div className="my-10 flex flex-row justify-between">
           <h1 className="text-xl font-bold">Personas</h1>
           <Button
@@ -71,9 +93,11 @@ const PersonsScreen = () => {
                   <TableCell>
                     <p className="font-bold">Rol</p>
                   </TableCell>
-                  <TableCell align="center">
-                    <p className="font-bold">Acciones</p>
-                  </TableCell>
+                  {userInformation?.usuario_rol_id === ROL_ORGANIZER_ID && (
+                    <TableCell align="center">
+                      <p className="font-bold">Acciones</p>
+                    </TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -89,12 +113,14 @@ const PersonsScreen = () => {
                     <TableCell>{person.usuario_correo}</TableCell>
                     <TableCell>{person.usuario_institucion_nombre}</TableCell>
                     <TableCell>{person.usuario_rol_nombre}</TableCell>
-                    <TableCell align="center">
-                      <Actions
-                        onEdit={() => onEditPerson()}
-                        onDelete={() => onDeletePerson()}
-                      />
-                    </TableCell>
+                    {userInformation?.usuario_rol_id === ROL_ORGANIZER_ID && (
+                      <TableCell align="center">
+                        <Actions
+                          onEdit={() => onEditPerson(person, person.usuario_id)}
+                          onDelete={() => onDeletePerson(person.usuario_id)}
+                        />
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -113,16 +139,30 @@ const PersonsScreen = () => {
             : "Eliminar persona"
         }
         onAccept={async () => {
-          if (type === "create") console.log("create");
-          else if (type === "edit") console.log("edit");
-          else if (type === "delete") console.log("delte");
-          handleClose();
+          if (type === "create") await postPerson(form, handleClose);
+          else if (type === "edit") console.log("edit", handleClose);
+          else if (type === "delete")
+            personIdSelected &&
+              (await deletePerson(personIdSelected, handleClose));
         }}
+        loading={loadingChange}
+        error={error}
+        setError={setError}
       >
         {type === "delete" ? (
           <Typography>¿Está seguro que desea eliminar el registro?</Typography>
         ) : (
-          <></>
+          <PersonForm
+            loadingRoles={loadingRoles}
+            getRoles={getRoles}
+            roles={roles}
+            getInstitutions={getInstitutions}
+            institutions={institutions}
+            loadingInstitutions={loadingInstitutions}
+            type={type}
+            onChangeField={onChangeField}
+            form={form}
+          />
         )}
       </CustomModal>
     </>

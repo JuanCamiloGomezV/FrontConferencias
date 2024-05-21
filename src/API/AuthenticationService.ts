@@ -32,3 +32,11 @@ export const getUserInformationService = async () => {
 
   return data;
 };
+
+export const deleteUserService = async (userId: number) => {
+  const { data } = await privateService.delete<UserResponse>(
+    `api/auth/user/${userId}`
+  );
+
+  return data;
+};

@@ -11,6 +11,8 @@ import AppBarResponsive from "./components/AppBarResponsive";
 import EventScreen from "./pages/home/events/EventScreen";
 import useCheckAuthenticationViewController from "./pages/authentication/checkAuthentication/useCheckAuthenticationViewController";
 import PersonsScreen from "./pages/home/persons/PersonsScreen";
+import LocationScreen from "./pages/home/locations/LocationScreen";
+import SponsorScreen from "./pages/home/sponsors/SponsorScreen";
 
 function App() {
   const {
@@ -33,6 +35,8 @@ function App() {
             <Route path="/" element={<DashboardScreen />} />
             <Route path="/events" element={<EventScreen />} />
             <Route path="/persons" element={<PersonsScreen />} />
+            <Route path="/locations" element={<LocationScreen />} />
+            <Route path="/sponsors" element={<SponsorScreen />} />
           </>
         )}
       </Routes>

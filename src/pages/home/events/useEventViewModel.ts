@@ -19,6 +19,7 @@ const useEventViewModel = () => {
   const [loadingSponsors, setLoadingSponsors] = useState(true);
   const [loadingOrganizers, setLoadingOrganizers] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [loadingChange, setLoadingChange] = useState(false);
 
   useEffect(() => {
     getEvents();
@@ -36,16 +37,18 @@ const useEventViewModel = () => {
 
   const postEvent = async (eventForm: EventRequest) => {
     try {
+      setLoadingChange(true);
       const newEvent = await postEventService(eventForm);
       setEvents((prev) => [...prev, newEvent]);
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
+    setLoadingChange(false);
   };
 
   const putEvent = async (eventForm: EventRequest, idEvent: number) => {
     try {
+      setLoadingChange(true);
       const newEvent = await putEventService(eventForm, idEvent);
 
       const eventsUpdate = events;
@@ -58,11 +61,12 @@ const useEventViewModel = () => {
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
+    setLoadingChange(false);
   };
 
   const deleteEvent = async (idEvent: number) => {
     try {
+      setLoadingChange(true);
       await deleteEventService(idEvent);
 
       const eventsUpdate = events.filter(
@@ -72,7 +76,7 @@ const useEventViewModel = () => {
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
+    setLoadingChange(false);
   };
 
   const getSponsors = async () => {
@@ -107,6 +111,7 @@ const useEventViewModel = () => {
     postEvent,
     putEvent,
     deleteEvent,
+    loadingChange,
   };
 };
 

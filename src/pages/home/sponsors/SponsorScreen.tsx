@@ -10,53 +10,48 @@ import {
   Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import useEventViewModel from "./useEventViewModel";
 import Actions from "../../../components/Actions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomModal from "../../../components/CustomModal";
-import EventForm from "./components/EventForm";
-import useEventViewController from "./useEventViewController";
+import useSponsorViewController from "./useSponsorViewController";
+import useSponsorViewModel from "./useSponsorViewModel";
+import SponsorForm from "./components/SponsorForm";
 
-const EventScreen = () => {
+const SponsorScreen = () => {
   const {
-    events,
     loading,
     getSponsors,
-    loadingSponsors,
     sponsors,
-    loadingOrganizers,
-    organizers,
-    getOrganizers,
-    postEvent,
-    putEvent,
-    deleteEvent,
+    postSponsor,
+    deleteLocation,
+    putSponsor,
     loadingChange,
-  } = useEventViewModel();
+  } = useSponsorViewModel();
 
   const {
     handleClose,
     open,
     type,
-    onEditEvent,
-    onCreateEvent,
-    onDeleteEvent,
-    eventForm,
+    onEditSponsor,
+    onCreateSponsor,
+    onDeleteSponsor,
+    sponsorForm,
     onChangeField,
-    eventIdSelected,
-  } = useEventViewController();
+    sponsorIdSelected,
+  } = useSponsorViewController();
 
   return (
     <>
-      <div className="p-10 flex flex-col bg-slate-50 h-screen">
+      <div className="p-10">
         <div className="my-10 flex flex-row justify-between">
-          <h1 className="text-xl font-bold">Eventos</h1>
+          <h1 className="text-xl font-bold">Patrocinadores</h1>
           <Button
             variant="contained"
             size="large"
             style={{ textTransform: "none" }}
-            onClick={onCreateEvent}
+            onClick={onCreateSponsor}
           >
-            <p className="mr-2">Crear evento</p>
+            <p className="mr-2">Agregar patrocinador</p>
             <AddCircleIcon />
           </Button>
         </div>
@@ -77,40 +72,29 @@ const EventScreen = () => {
                     <p className="font-bold">Nombre</p>
                   </TableCell>
 
-                  <TableCell>
-                    <p className="font-bold">Ciudad</p>
-                  </TableCell>
-                  <TableCell>
-                    <p className="font-bold">Organizador</p>
-                  </TableCell>
-                  <TableCell>
-                    <p className="font-bold">Patrocinador</p>
-                  </TableCell>
-                  <TableCell>
-                    <p className="font-bold">Descripción</p>
-                  </TableCell>
                   <TableCell align="center">
                     <p className="font-bold">Acciones</p>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {events.map((event) => (
+                {sponsors.map((sponsor) => (
                   <TableRow
-                    key={event.evento_id}
+                    key={sponsor.patrocinador_id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {event.evento_nombre}
+                      {sponsor.patrocinador_nombre}
                     </TableCell>
-                    <TableCell>{event.evento_ciudad}</TableCell>
-                    <TableCell>{event.evento_organizador_nombre}</TableCell>
-                    <TableCell>{event.evento_patrocinador_nombre}</TableCell>
-                    <TableCell>{event.evento_descripcion}</TableCell>
+
                     <TableCell align="center">
                       <Actions
-                        onEdit={() => onEditEvent(event, event.evento_id)}
-                        onDelete={() => onDeleteEvent(event.evento_id)}
+                        onEdit={() =>
+                          onEditSponsor(sponsor, sponsor.patrocinador_id)
+                        }
+                        onDelete={() =>
+                          onDeleteSponsor(sponsor.patrocinador_id)
+                        }
                       />
                     </TableCell>
                   </TableRow>
@@ -125,17 +109,18 @@ const EventScreen = () => {
         open={open}
         title={
           type === "create"
-            ? "Crear evento"
+            ? "Crear patrocinador"
             : type === "edit"
-            ? "Editar evento"
-            : "Eliminar evento"
+            ? "Editar patrocinador"
+            : "Eliminar patrocinador"
         }
         onAccept={async () => {
-          if (type === "create") await postEvent(eventForm);
+          if (type === "create") await postSponsor(sponsorForm);
           else if (type === "edit")
-            eventIdSelected && putEvent(eventForm, eventIdSelected);
+            sponsorIdSelected &&
+              (await putSponsor(sponsorForm, sponsorIdSelected));
           else if (type === "delete")
-            eventIdSelected && deleteEvent(eventIdSelected);
+            sponsorIdSelected && (await deleteLocation(sponsorIdSelected));
           handleClose();
         }}
         loading={loadingChange}
@@ -143,15 +128,10 @@ const EventScreen = () => {
         {type === "delete" ? (
           <Typography>¿Está seguro que desea eliminar el registro?</Typography>
         ) : (
-          <EventForm
+          <SponsorForm
             getSponsors={getSponsors}
-            loadingOrganizers={loadingOrganizers}
-            loadingSponsors={loadingSponsors}
-            sponsors={sponsors}
-            getOrganizers={getOrganizers}
-            organizers={organizers}
             onChangeField={onChangeField}
-            eventForm={eventForm}
+            sponsorForm={sponsorForm}
           />
         )}
       </CustomModal>
@@ -159,4 +139,4 @@ const EventScreen = () => {
   );
 };
 
-export default EventScreen;
+export default SponsorScreen;

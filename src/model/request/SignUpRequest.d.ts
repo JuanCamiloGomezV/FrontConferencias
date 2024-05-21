@@ -3,6 +3,7 @@ export interface SignUpRequest {
   identification: string;
   email: string;
   password: string;
-  roleId: string;
-  institutionId: string;
+  roleId?: number;
+  institutionId?: number;
+  photo?: string | null;
 }

@@ -1,5 +1,5 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import { Box, Button, Divider, IconButton, Modal } from "@mui/material";
+import { Alert, Box, Button, Divider, IconButton, Modal } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -17,6 +17,9 @@ interface Props {
   children: JSX.Element;
   title: string;
   onAccept: () => void;
+  loading?: boolean;
+  error?: string;
+  setError?: React.Dispatch<React.SetStateAction<string>>;
 }
 const CustomModal = ({
   handleClose,
@@ -24,11 +27,19 @@ const CustomModal = ({
   children,
   title,
   onAccept,
+  loading = false,
+  error,
+  setError,
 }: Props) => {
+  const onClose = () => {
+    handleClose();
+    if (setError) setError("");
+  };
+
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -42,6 +53,11 @@ const CustomModal = ({
         </div>
         <section className="p-5">
           <div className="flex gap-4 flex-col">
+            {error && error.length > 0 && (
+              <Alert severity="error" onClose={() => setError && setError("")}>
+                {error}
+              </Alert>
+            )}
             {children}
             <Divider />
             <div className="flex justify-end gap-2">
@@ -49,7 +65,7 @@ const CustomModal = ({
                 variant="outlined"
                 size="medium"
                 style={{ textTransform: "none" }}
-                onClick={handleClose}
+                onClick={onClose}
               >
                 <p>Cancelar</p>
               </Button>
@@ -57,9 +73,13 @@ const CustomModal = ({
                 variant="contained"
                 size="medium"
                 style={{ textTransform: "none" }}
-                onClick={onAccept}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onAccept();
+                }}
+                disabled={loading}
               >
-                <p>Aceptar</p>
+                <p>{loading ? "Cargando..." : "Aceptar"}</p>
               </Button>
             </div>
           </div>

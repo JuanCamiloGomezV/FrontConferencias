@@ -62,5 +62,6 @@ export const useSignUpViewModel = () => {
     error,
     institutions,
     loadingInstitutions,
+    setError,
   };
 };
