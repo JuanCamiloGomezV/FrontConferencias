@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import AppBarResponsive from "./components/AppBarResponsive";
 import { AuthContext } from "./context/authContext/AuthContext";
 import "./index.css";
-import SignUpScreen from "./pages/authentication/signUp/SignUpScreen";
-import CheckAuthenticationScreen from "./pages/authentication/checkAuthentication/CheckAuthenticationScreen";
-import DashboardScreen from "./pages/home/dashboard/DashboardScreen";
-import SignInScreen from "./pages/authentication/signIn/SignInScreen";
-import AppBarResponsive from "./components/AppBarResponsive";
-import EventScreen from "./pages/home/events/EventScreen";
 import useCheckAuthenticationViewController from "./pages/authentication/checkAuthentication/useCheckAuthenticationViewController";
-import PersonsScreen from "./pages/home/persons/PersonsScreen";
+import SignInScreen from "./pages/authentication/signIn/SignInScreen";
+import SignUpScreen from "./pages/authentication/signUp/SignUpScreen";
+import ConferenceScreen from "./pages/home/conferences/ConferenceScreen";
+import DashboardScreen from "./pages/home/dashboard/DashboardScreen";
+import EventScreen from "./pages/home/events/EventScreen";
 import LocationScreen from "./pages/home/locations/LocationScreen";
+import PersonsScreen from "./pages/home/persons/PersonsScreen";
 import SponsorScreen from "./pages/home/sponsors/SponsorScreen";
 
 function App() {
@@ -34,8 +34,9 @@ function App() {
           <>
             <Route path="/" element={<DashboardScreen />} />
             <Route path="/events" element={<EventScreen />} />
+            <Route path="/conferences" element={<ConferenceScreen />} />
             <Route path="/persons" element={<PersonsScreen />} />
-            {/* <Route path="/locations" element={<LocationScreen />} /> */}
+            <Route path="/locations" element={<LocationScreen />} />
             <Route path="/sponsors" element={<SponsorScreen />} />
           </>
         )}
